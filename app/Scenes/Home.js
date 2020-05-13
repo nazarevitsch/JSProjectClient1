@@ -1,12 +1,12 @@
 import {View} from "react-native";
 import React from "react";
-import Logo from "./Logo";
 import ListOfAll from "./ListOfAll";
+import Bar from "../BarStyle";
 
 export default function HomeScreen() {
     return (
         <View>
-            <Logo/>
+            <Bar/>
             <ListOfAll/>
         </View>
     );

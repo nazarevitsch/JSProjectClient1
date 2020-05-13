@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {StyleSheet, View, ActivityIndicator, FlatList, Text, Image, AsyncStorage} from "react-native";
+import Constants from "expo-constants";
+import MainLink from "../MainLinks";
 
 export default function ListOfAll() {
     const [data, setDate] = useState([]);
@@ -7,7 +9,7 @@ export default function ListOfAll() {
 
     useEffect(() => {
         if (loading) {
-            fetch('http://192.168.0.105:8080', {
+            fetch(MainLink(), {
                 method: 'GET',
                 headers: {
                     Filters: "ABCD",
@@ -21,7 +23,7 @@ export default function ListOfAll() {
     });
 
     return (
-        <View>
+        <View style={{paddingTop: Constants.statusBarHeight}}>
             {loading ? <ActivityIndicator/> : <Text>{data.name}</Text>}
             <FlatList
                 data={data}
@@ -44,7 +46,7 @@ function ItemRender({ title }) {
         <View style={styles.Container}>
             <Image
                 style={styles.MP}
-                source={{uri: "http://192.168.0.105:8080" + title.mainPhoto}}
+                source={{uri: MainLink() + title.mainPhoto}}
             />
             <View>
                 <Text>{title.name}</Text>

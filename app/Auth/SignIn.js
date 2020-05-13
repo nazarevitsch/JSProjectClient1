@@ -2,23 +2,26 @@ import React, {useState} from "react";
 import {View, TextInput, Dimensions, StyleSheet, TouchableOpacity, Text} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import sign from "../WorkWithStorage/accWrite";
+import Bar from "../BarStyle";
+import MainLink from "../MainLinks.js";
 
 const wid = Dimensions.get('window').width;
 
-export default function Login({navigation}) {
+export default function SignIn({navigation}) {
 
     const [login, setLogin] = useState("");
     const [pass, setPass] = useState("");
 
-
     return (
         <View style={styles.container}>
-            <View>
+            <Bar/>
+            <Text style={styles.logo}>Logo Eat</Text>
+            <View style={{marginTop: 30}}>
                 <Ionicons name={"ios-person"} size={28} color={"tomato"}
                           style={styles.iconInput}/>
                 <TextInput
                     style={styles.input}
-                    placeholder={"UserName"}
+                    placeholder={"User Name"}
                     placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
                     onChangeText={text => setLogin(text)}
                 />
@@ -37,19 +40,20 @@ export default function Login({navigation}) {
             <TouchableOpacity
                 style={styles.buttonLogIn}
                 onPress={() => {
-                    fetch('http://192.168.0.105:8080/login', {
+                    fetch(MainLink() + "signIn", {
                         method: 'GET',
                         headers: {
                             Login: login,
                             Pass: pass,
-                        }})
+                        }
+                    })
                         .then((resp) => resp.text())
                         .then(respText => {
                             if (respText === "Y") {
-                                console.log("huina");
                                 sign("User", "Yes");
                                 navigation.navigate("MainScreen")
-                            }})
+                            }
+                        })
                         .catch((err) => {
                             console.log(err);
                         });
@@ -60,10 +64,13 @@ export default function Login({navigation}) {
                     color: "rgba(255, 255, 255, 0.7)",
                     fontSize: 16
                 }}
-                >Log in</Text>
+                >Sign in</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.buttonLogIn}
+                onPress={() => {
+                    navigation.navigate("ForgotPass")
+                }}
             >
                 <Text style={{
                     textAlign: "center",
@@ -74,7 +81,9 @@ export default function Login({navigation}) {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.buttonLogIn}
-                onPress={() => {navigation.navigate("SignUP", {screen: "List"})}}
+                onPress={() => {
+                    navigation.navigate("SignUP")
+                }}
             >
                 <Text style={{
                     textAlign: "center",
@@ -92,8 +101,9 @@ const styles = StyleSheet.create({
         flex: 1,
         width: null,
         height: null,
-        justifyContent: "center",
-        alignItems: "center"
+        // justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 100,
     },
     input:{
         width: wid - 55,
@@ -117,5 +127,10 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginTop: 8,
         justifyContent: "center"
+    },
+    logo: {
+        textAlign: "center",
+        fontSize: 55,
+        fontStyle: "italic",
     }
 });

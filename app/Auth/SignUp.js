@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import {View, TextInput, Dimensions, StyleSheet, TouchableOpacity, Text} from "react-native";
+import {View, TextInput, Dimensions, StyleSheet, TouchableOpacity, Text, Alert} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-
+import MainLink from "../MainLinks";
 
 const wid = Dimensions.get('window').width;
 
@@ -9,31 +9,16 @@ export default function SignUp({navigation}) {
 
     const [login, setLogin] = useState("");
     const [pass, setPass] = useState("");
-
-    const onPress = () => {
-        fetch('http://192.168.0.105:8080/login', {
-            method: 'GET',
-            headers: {
-                Login: login,
-                Pass: pass,
-            }})
-            .then((resp) => resp.text())
-            .then(respText => {
-                if (respText === "Y") {
-                }})
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    const [name, setName] = useState("");
 
     return (
         <View style={styles.container}>
             <View>
-                <Ionicons name={"ios-person"} size={28} color={"tomato"}
+                <Ionicons name={"ios-mail"} size={28} color={"tomato"}
                           style={styles.iconInput}/>
                 <TextInput
                     style={styles.input}
-                    placeholder={"UserName"}
+                    placeholder={"User Email"}
                     placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
                     onChangeText={text => setLogin(text)}
                 />
@@ -49,9 +34,49 @@ export default function SignUp({navigation}) {
                     onChangeText={text => setPass(text)}
                 />
             </View>
+            <View style={{marginTop: 8}}>
+                <Ionicons name={"ios-person"} size={28} color={"tomato"}
+                          style={styles.iconInput}/>
+                <TextInput
+                    style={styles.input}
+                    placeholder={"User Name"}
+                    secureTextEntry={true}
+                    placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                    onChangeText={text => setName(text)}
+                />
+            </View>
             <TouchableOpacity
                 style={styles.buttonLogIn}
-                onPress={() => {navigation.goBack()}}
+                onPress={() => {
+                    fetch(MainLink() + "signUp", {
+                    method: 'GET',
+                    headers: {
+                    Login: login,
+                    Pass: pass,
+                    Name: name,
+                }
+                })
+                    .then((resp) => resp.text())
+                    .then(respText => {
+                    if (respText === "Y") {
+                        navigation.navigate("MainScreen");
+                } else {
+                    Alert.alert(
+                    "ERROR",
+                    "This email is already used!",
+                    [
+                {
+                    text: "Ok",
+                    style: "cancel"
+                },
+                    ],
+                    );
+                }
+                })
+                    .catch((err) => {
+                    console.log(err);
+                });
+                }}
             >
                 <Text style={{
                     textAlign: "center",
@@ -69,8 +94,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: null,
         height: null,
-        justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        paddingTop: 80
     },
     input:{
         width: wid - 55,

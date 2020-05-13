@@ -11,7 +11,7 @@ export default function SettingsScreen({navigation}) {
                 style={styles.buttonLogIn}
                 onPress={() => {
                     del("User");
-                    navigation.navigate("Login")}}
+                    navigation.navigate("SignIn")}}
             >
                 <Text style={{
                     textAlign: "center",
