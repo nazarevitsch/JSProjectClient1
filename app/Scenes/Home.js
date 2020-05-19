@@ -1,20 +1,22 @@
 import React from "react";
-import ListOfAll from "./ListOfAll";
 import Window from "./Window";
 import OrderWindow from "./OrderWindow";
+import RoutsForListFiltersSort from "./RoutsForListFiltersSort";
 import Bar from "../BarStyle";
 import {createStackNavigator} from "@react-navigation/stack";
+import {View} from "react-native";
 
 const Stack = createStackNavigator();
 
 export default function HomeScreen() {
     return (
             <Stack.Navigator
-                initialRouteName="ListOfAll"
+                initialRouteName="Routs"
             >
                 <Stack.Screen name="OrderWindow" component={OrderWindow}/>
-                <Stack.Screen name="ListOfAll" component={ListOfAll} options={{headerShown: false}}/>
+                <Stack.Screen name="Routs" component={RoutsForListFiltersSort} options={{headerShown: false}}/>
                 <Stack.Screen name="Window" component={Window}/>
             </Stack.Navigator>
+
     );
 }

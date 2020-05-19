@@ -25,8 +25,8 @@ export default function ListOfAll({navigation}) {
     });
 
     return (
-        <View style={{paddingTop: Constants.statusBarHeight}}>
-            {loading ? <ActivityIndicator/> : <Text>{data.name}</Text>}
+        <View>
+            {loading ? <ActivityIndicator/> :
             <FlatList
                 data={data}
                 renderItem={({item}) =><ItemRender title={item} nav={navigation}/>}
@@ -38,7 +38,7 @@ export default function ListOfAll({navigation}) {
                     }}
                     />
                 }
-            />
+            />}
         </View>
     );
 }
