@@ -1,15 +1,4 @@
-import {
-    ScrollView,
-    Text,
-    View,
-    Switch,
-    Button,
-    Picker,
-    TextInput,
-    Dimensions,
-    StyleSheet,
-    FlatList
-} from "react-native";
+import {ScrollView, Text, View, Switch, Button, Picker, TextInput, Dimensions, StyleSheet, FlatList} from "react-native";
 import React, {useState} from "react";
 
 const wid = Dimensions.get('window').width;

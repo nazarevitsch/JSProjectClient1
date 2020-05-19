@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View, ActivityIndicator, FlatList, Text, Image, AsyncStorage} from "react-native";
+import {StyleSheet, View, ActivityIndicator, FlatList, Text, Image, TouchableOpacity} from "react-native";
 import Constants from "expo-constants";
 import MainLink from "../MainLinks";
 
-export default function ListOfAll() {
-    const [data, setDate] = useState([]);
+export default function ListOfAll({navigation}) {
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -16,7 +16,9 @@ export default function ListOfAll() {
                 }
             })
                 .then((res) => res.json())
-                .then((respJson) => {setDate(respJson)})
+                .then((respJson) => {
+                    setData(respJson)
+                })
                 .catch(error => console.log(error))
                 .finally(() => setLoading(false));
         }
@@ -27,8 +29,8 @@ export default function ListOfAll() {
             {loading ? <ActivityIndicator/> : <Text>{data.name}</Text>}
             <FlatList
                 data={data}
-                renderItem={({item}) =><ItemRender title={item}/>}
-                ItemSeparatorComponent={()=>
+                renderItem={({item}) =><ItemRender title={item} nav={navigation}/>}
+                ItemSeparatorComponent={() =>
                     <View style={{
                         height: 2,
                         width: "100%",
@@ -41,19 +43,23 @@ export default function ListOfAll() {
     );
 }
 
-function ItemRender({ title }) {
+function ItemRender({title, nav}) {
     return (
-        <View style={styles.Container}>
+         <TouchableOpacity
+            style={styles.Container}
+            onPress={()=>{nav.navigate("Window", {id: title.id})}}
+        >
             <Image
                 style={styles.MP}
-                source={{uri: MainLink() + title.mainPhoto}}
+                source={{uri: MainLink() + title.image}}
             />
             <View>
                 <Text>{title.name}</Text>
                 <Text>{title.location}</Text>
+                <Text>Work Time: {title.From} - {title.To}</Text>
                 <Text style={styles.TTSM}>Tap to see more.</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

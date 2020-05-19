@@ -7,7 +7,7 @@ import ForgotPassword from "./Auth/ForgotPassword";
 import signedIN from "./WorkWithStorage/Account";
 import MainScreen from "./Scenes/MainScreen";
 import Loading from "./Scenes/Loading";
-import {Button, View, StatusBar} from "react-native";
+import {Button} from "react-native";
 
 const Stack = createStackNavigator();
 
