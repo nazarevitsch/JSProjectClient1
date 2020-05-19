@@ -36,7 +36,7 @@ export default function OrderWindow({navigation, route}) {
             </Picker>
             <View style={{alignItems: "center"}}>
                 <TouchableOpacity
-                    style={styles.buttonLogIn}
+                    style={styles.button}
                     onPress={() => {
                         sendOrder({id, date, peopleAmount, navigation})
                     }}
@@ -77,7 +77,7 @@ function createAlert({navigation}) {
 };
 
 const styles = StyleSheet.create({
-    buttonLogIn: {
+    button: {
         width: wid - 55,
         height: 45,
         backgroundColor: "rgba(180,180,180, 0.7)",

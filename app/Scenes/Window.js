@@ -45,93 +45,97 @@ export default function Window({navigation, route}) {
     return (
         <View>
             <ScrollView>
-            {loading ? <ActivityIndicator/> :
-                <View>
-                    <View style={styles.Container}>
-                        <Image
-                            style={styles.MP}
-                            source={{uri: MainLink() + data[0].mainImage}}
-                        />
+                {loading ? <ActivityIndicator/> :
+                    <View>
+                        <View style={styles.Container}>
+                            <Image
+                                style={styles.MP}
+                                source={{uri: MainLink() + data[0].mainImage}}
+                            />
+                            <View>
+                                <Text>{data[0].name}</Text>
+                                <Text>{data[0].location}</Text>
+                                <View style={{flexDirection: "row", flex: 1, justifyContent: "center"}}>
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={() => {
+                                            navigation.navigate("OrderWindow", {id: data[0].id})
+                                        }}
+                                    >
+                                        <Text style={{fontSize: 26,}}>Order Table</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
                         <View>
-                            <Text>{data[0].name}</Text>
-                            <Text>{data[0].location}</Text>
                             <TouchableOpacity
-                            style={styles.button}
-                            onPress={()=>{navigation.navigate("OrderWindow", {id: data[0].id})}}
+                                style={styles.showHide}
+                                onPress={() => {
+                                    setHideDescription(!hideDescription)
+                                }}
                             >
-                                <Text style={{fontSize: 26,}}>Order Table</Text>
+                                {hideDescription ?
+                                    <View style={styles.Container}>
+                                        <AntDesign name={"down"} size={28} color={"tomato"}
+                                                   style={styles.iconInput}/>
+                                        <Text>Show Description</Text>
+                                    </View>
+                                    :
+                                    <View style={styles.Container}>
+                                        <AntDesign name={"up"} size={28} color={"tomato"}
+                                                   style={styles.iconInput}/>
+                                        <Text>Hide Description</Text>
+                                    </View>
+                                }
                             </TouchableOpacity>
+                            {!hideDescription ? <ShowDescription desk={data[0].description}/> : <View></View>}
+
+                            <TouchableOpacity
+                                style={styles.showHide}
+                                onPress={() => {
+                                    setHideMenu(!hideMenu)
+                                }}
+                            >
+                                {hideMenu ?
+                                    <View style={styles.Container}>
+                                        <AntDesign name={"down"} size={28} color={"tomato"}
+                                                   style={styles.iconInput}/>
+                                        <Text>Show Menu</Text>
+                                    </View>
+                                    :
+                                    <View style={styles.Container}>
+                                        <AntDesign name={"up"} size={28} color={"tomato"}
+                                                   style={styles.iconInput}/>
+                                        <Text>Hide Menu</Text>
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                            {!hideMenu ? <ShowMenu menu={data[0].menu}/> : <View></View>}
+
+                            <TouchableOpacity
+                                style={styles.showHide}
+                                onPress={() => {
+                                    setHideImages(!hideImages)
+                                }}
+                            >
+                                {hideImages ?
+                                    <View style={styles.Container}>
+                                        <AntDesign name={"down"} size={28} color={"tomato"}
+                                                   style={styles.iconInput}/>
+                                        <Text>Show Images</Text>
+                                    </View>
+                                    :
+                                    <View style={styles.Container}>
+                                        <AntDesign name={"up"} size={28} color={"tomato"}
+                                                   style={styles.iconInput}/>
+                                        <Text>Hide Images</Text>
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                            {!hideImages ? <ShowImages images={data[0].images}/> : <View></View>}
                         </View>
                     </View>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.showHide}
-                            onPress={() => {
-                                setHideDescription(!hideDescription)
-                            }}
-                        >
-                            {hideDescription ?
-                                <View style={styles.Container}>
-                                    <AntDesign name={"down"} size={28} color={"tomato"}
-                                               style={styles.iconInput}/>
-                                    <Text>Show Description</Text>
-                                </View>
-                                :
-                                <View style={styles.Container}>
-                                    <AntDesign name={"up"} size={28} color={"tomato"}
-                                               style={styles.iconInput}/>
-                                    <Text>Hide Description</Text>
-                                </View>
-                            }
-                        </TouchableOpacity>
-                        {!hideDescription ? <ShowDescription desk={data[0].description}/> : <View></View>}
-
-                        <TouchableOpacity
-                            style={styles.showHide}
-                            onPress={() => {
-                                setHideMenu(!hideMenu)
-                            }}
-                        >
-                            {hideMenu ?
-                                <View style={styles.Container}>
-                                    <AntDesign name={"down"} size={28} color={"tomato"}
-                                               style={styles.iconInput}/>
-                                    <Text>Show Menu</Text>
-                                </View>
-                                :
-                                <View style={styles.Container}>
-                                    <AntDesign name={"up"} size={28} color={"tomato"}
-                                               style={styles.iconInput}/>
-                                    <Text>Hide Menu</Text>
-                                </View>
-                            }
-                        </TouchableOpacity>
-                        {!hideMenu ? <ShowMenu menu={data[0].menu}/> : <View></View>}
-
-                        <TouchableOpacity
-                            style={styles.showHide}
-                            onPress={() => {
-                                setHideImages(!hideImages)
-                            }}
-                        >
-                            {hideImages ?
-                                <View style={styles.Container}>
-                                    <AntDesign name={"down"} size={28} color={"tomato"}
-                                               style={styles.iconInput}/>
-                                    <Text>Show Images</Text>
-                                </View>
-                                :
-                                <View style={styles.Container}>
-                                    <AntDesign name={"up"} size={28} color={"tomato"}
-                                               style={styles.iconInput}/>
-                                    <Text>Hide Images</Text>
-                                </View>
-                            }
-                        </TouchableOpacity>
-                        {!hideImages ? <ShowImages images={data[0].images}/> : <View></View>}
-                    </View>
-                </View>
-            }
+                }
             </ScrollView>
         </View>
     );
@@ -207,22 +211,22 @@ const styles = StyleSheet.create({
         flexWrap: "wrap"
     },
     MP: {
-        height: 90,
-        width: 90
+        height: 100,
+        width: 100
     },
     normalImage: {
         height: (heig/2),
         width: (wid * 40)/100,
     },
     showHide: {
-        backgroundColor: "#bec1be"
+        backgroundColor: "rgba(180,180,180, 0.7)"
     },
     button: {
-        height: 35,
-        width: wid/2,
-        borderRadius: 25,
-        backgroundColor: "#001fff",
         alignItems: "center",
-        marginLeft: 20
-    }
+        width: wid / 2,
+        height: 35,
+        backgroundColor: "rgba(180,180,180, 0.7)",
+        borderRadius: 25,
+        justifyContent: "center"
+    },
 });
