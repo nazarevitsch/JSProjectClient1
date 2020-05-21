@@ -1,10 +1,22 @@
-import {ScrollView, Text, View, Switch, Button, Picker, TextInput, Dimensions, StyleSheet, FlatList} from "react-native";
+import {
+    ScrollView,
+    Text,
+    View,
+    Switch,
+    Button,
+    Picker,
+    TextInput,
+    Dimensions,
+    StyleSheet,
+    FlatList,
+    TouchableOpacity
+} from "react-native";
 import React, {useState} from "react";
 
 const wid = Dimensions.get('window').width;
 const selectedFilters = [{from: 0, to: 0, selected: "a"}];
 
-export default function FiltersScreen() {
+export default function FiltersScreen({navigation}) {
 
     const [priceFrom, setPriceFrom] = useState(0);
     const [priceTo, setPriceTo] = useState(0);
@@ -107,8 +119,25 @@ export default function FiltersScreen() {
                     }
                 />
             </View>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                    sendFilters({navigation})
+                }}
+            >
+                <Text style={{
+                    textAlign: "center",
+                    color: "rgba(255, 255, 255, 0.7)",
+                    fontSize: 16
+                }}
+                >Save Filters</Text>
+            </TouchableOpacity>
         </View>
     );
+}
+
+function sendFilters({navigation}) {
+    navigation.navigate("ListOfAll", {selectedFilters: selectedFilters});
 }
 
 const styles = StyleSheet.create({
@@ -129,5 +158,12 @@ const styles = StyleSheet.create({
     Container: {
         flexDirection: "row",
         flexWrap: "wrap"
+    },
+    button: {
+        width: wid - 55,
+        height: 45,
+        backgroundColor: "rgba(180,180,180, 0.7)",
+        borderRadius: 25,
+        justifyContent: "center"
     },
 });

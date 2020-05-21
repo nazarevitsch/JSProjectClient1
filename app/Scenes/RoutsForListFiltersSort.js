@@ -9,9 +9,10 @@ const Tab = createMaterialTopTabNavigator();
 export default function RoutsForListFiltersSort() {
     return (
         <Tab.Navigator
+            initialRouteName={"ListOfAll"}
             style={{paddingTop: Constants.statusBarHeight}}
         >
-            <Tab.Screen name="ListOfAll" component={ListOfAll}/>
+            <Tab.Screen name="ListOfAll" component={ListOfAll} initialParams={{selectedFilters: []}}/>
             <Tab.Screen name="Filters" component={Filters}/>
         </Tab.Navigator>
     );
