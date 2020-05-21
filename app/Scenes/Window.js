@@ -40,7 +40,7 @@ export default function Window({navigation, route}) {
                 .catch(error => console.log(error))
                 .finally(() => setLoading(false));
         }
-    });
+    }, [id]);
 
     return (
         <View>
