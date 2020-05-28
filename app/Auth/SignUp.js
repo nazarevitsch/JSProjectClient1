@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {View, TextInput, Dimensions, StyleSheet, TouchableOpacity, Text, Alert} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import MainLink from "../MainLinks";
+import sign from "../WorkWithStorage/accWrite";
 
 const wid = Dimensions.get('window').width;
 
@@ -10,6 +11,7 @@ export default function SignUp({navigation}) {
     const [login, setLogin] = useState("");
     const [pass, setPass] = useState("");
     const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
 
     return (
         <View style={styles.container}>
@@ -40,9 +42,18 @@ export default function SignUp({navigation}) {
                 <TextInput
                     style={styles.input}
                     placeholder={"User Name"}
-                    secureTextEntry={true}
                     placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
                     onChangeText={text => setName(text)}
+                />
+            </View>
+            <View style={{marginTop: 8}}>
+                <Ionicons name={"ios-person"} size={28} color={"tomato"}
+                          style={styles.iconInput}/>
+                <TextInput
+                    style={styles.input}
+                    placeholder={"User Phone Number"}
+                    placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                    onChangeText={text => setPhone(text)}
                 />
             </View>
             <TouchableOpacity
@@ -51,19 +62,21 @@ export default function SignUp({navigation}) {
                     fetch(MainLink() + "signUp", {
                     method: 'GET',
                     headers: {
-                    Login: login,
-                    Pass: pass,
-                    Name: name,
+                    login: login,
+                    pass: pass,
+                    name: name,
+                    phone: phone
                 }
                 })
                     .then((resp) => resp.text())
                     .then(respText => {
                     if (respText === "Y") {
+                        sign("User", "Yes");
                         navigation.navigate("MainScreen");
                 } else {
                     Alert.alert(
                     "ERROR",
-                    "This email is already used!",
+                    "This email or phone number is already used!",
                     [
                 {
                     text: "Ok",

@@ -29,13 +29,13 @@ export default function Window({navigation, route}) {
             fetch(MainLink() + "item", {
                 method: 'GET',
                 headers: {
-                    ID: {id},
+                    id: id,
                 }
             })
                 .then((res) => res.json())
                 .then((respJson) => {
-                    setData(respJson)
-                    console.log(data[0].images);
+                    setData(respJson);
+                    console.log(respJson);
                 })
                 .catch(error => console.log(error))
                 .finally(() => setLoading(false));
@@ -50,7 +50,11 @@ export default function Window({navigation, route}) {
                         <View style={styles.Container}>
                             <Image
                                 style={styles.MP}
-                                source={{uri: MainLink() + data[0].mainImage}}
+                                source={{uri: MainLink() + "img",
+                                    headers:{
+                                        name: data[0].mainImage,
+                                    }
+                                }}
                             />
                             <View>
                                 <Text>{data[0].name}</Text>
@@ -200,7 +204,10 @@ function ImageRender({image}) {
     return (
         <Image
             style={styles.normalImage}
-            source={{uri: MainLink() + image}}
+            source={{uri: MainLink() + "img",
+            headers: {
+                name: image.name
+            }}}
         />
     );
 }

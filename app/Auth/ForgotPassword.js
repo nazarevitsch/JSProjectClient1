@@ -53,7 +53,7 @@ export default function ForgotPasswordScene({navigation}) {
                         fetch(MainLink() + "ForgotPass1", {
                             method: 'GET',
                             headers: {
-                                Login: login,
+                                login: login,
                             }
                         })
                             .then((resp) => resp.text())

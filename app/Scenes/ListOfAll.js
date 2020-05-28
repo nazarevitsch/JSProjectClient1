@@ -17,10 +17,8 @@ export default function ListOfAll({navigation, route}) {
                     Filters: FiltersToString(selectedFilters),
                 }
             })
-                .then((res) => res.json())
-                .then((respJson) => {
-                    setData(respJson);
-                })
+                .then((res) =>res.json())
+                .then((resJson) => setData(resJson.data))
                 .catch(error => console.log(error))
                 .finally(()=> {
                     setLoading(false)});
@@ -57,12 +55,16 @@ function ItemRender({title, nav}) {
         >
             <Image
                 style={styles.MP}
-                source={{uri: MainLink() + title.image}}
+                source={{uri: MainLink() + "img",
+                    headers:{
+                    name: title.image
+                    }
+                }}
             />
             <View>
                 <Text>{title.name}</Text>
                 <Text>{title.location}</Text>
-                <Text>Work Time: {title.From} - {title.To}</Text>
+                <Text>Work Time: {title.work_from} - {title.work_to}</Text>
                 <Text style={styles.TTSM}>Tap to see more.</Text>
             </View>
         </TouchableOpacity>

@@ -4,6 +4,7 @@ import {Ionicons} from "@expo/vector-icons";
 import sign from "../WorkWithStorage/accWrite";
 import Bar from "../BarStyle";
 import MainLink from "../MainLinks.js";
+import {Base64} from 'js-base64'
 
 const wid = Dimensions.get('window').width;
 
