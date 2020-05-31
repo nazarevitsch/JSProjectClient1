@@ -66,11 +66,11 @@ export default function ForgotPasswordScene({navigation}) {
                                 console.log(err);
                             });
                     } else {
-                        fetch(MainLink + "ForgotPass2", {
+                        fetch(MainLink() + "ForgotPass2", {
                             method: 'GET',
                             headers: {
-                                Login: login,
-                                Code: code
+                                login: login,
+                                code: code
                             }
                         })
                             .then((resp) => resp.text())

@@ -9,103 +9,125 @@ import {
     Dimensions,
     StyleSheet,
     FlatList,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator,
+    Platform
 } from "react-native";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import MainLink from "../MainLinks";
 
 const wid = Dimensions.get('window').width;
 const selectedFilters = [{from: 0, to: 0, selected: "a"}];
 
 export default function FiltersScreen({navigation}) {
 
+    const [data, setData] = useState({});
+    const [loadingCategory, setLoadingCategory] = useState(true);
     const [priceFrom, setPriceFrom] = useState(0);
     const [priceTo, setPriceTo] = useState(0);
-    const [selectedValue, setSelectedValue] = useState("a1");
+    const [selectedValue, setSelectedValue] = useState(1);
     const [rerender, setRerender] = useState(true);
 
-    // const [isEnabled, setIsEnabled] = useState(false);
-    // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    useEffect(() => {
+        fetch(MainLink() + 'categories')
+            .then((res) => res.json())
+            .then((resJson) => {
+                setData(resJson.data);
+                setLoadingCategory(false);
+            })
+    }, []);
+
+    const createPickerItem = () => {
+        return (data.map((x, i) => {
+            return (<Picker.Item label={x.name} key={x.category_id} value={x.category_id}/>)
+        }));
+    };
+
+    const getCategoryName = (id) => {
+      for(let i = 0; i < data.length; i++){
+          if (data[i].category_id === id){
+              return data[i].name;
+          }
+      }
+    };
+
+    const check = (id) => {
+        for(let i = 0; i < selectedFilters.length; i++){
+            if (selectedFilters[i].selected === id){
+                return true;
+            }
+        }
+    };
 
     return (
         <View>
             <View>
-                <ScrollView style={{paddingTop: 25}}>
-                    <View style={{flex: 1}}>
-                        {/*<View style={{flexDirection: "row", justifyContent: "space-between", margin: 15}}>*/}
-                        {/*    <Text style={{fontSize: 26}}>Наявність живої музики</Text>*/}
-                        {/*    <Switch*/}
-                        {/*        trackColor={{false: "#767577", true: "#0acf0d"}}*/}
-                        {/*        ios_backgroundColor="#3e3e3e"*/}
-                        {/*        onValueChange={toggleSwitch}*/}
-                        {/*        value={isEnabled}*/}
-                        {/*    />*/}
-                        {/*</View>*/}
-                        <View style={{flexDirection: "row"}}>
-                            <View style={{width: ((wid * 40) / 100), height: 100}}>
+                <View>
+                    <View style={{flexDirection: "row"}}>
+                        <View style={{width: ((wid * 40) / 100), height: 200}}>
+                            {loadingCategory ? <ActivityIndicator/> :
                                 <Picker
                                     selectedValue={selectedValue}
-                                    style={{height: 50, width: 150}}
                                     onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
                                 >
-                                    <Picker.Item label="Гарячі страви" value="a1"/>
-                                    <Picker.Item label="Паста" value="a2"/>
-                                    <Picker.Item label="Піца" value="a3"/>
-                                    <Picker.Item label="Суші" value="a4"/>
-                                    <Picker.Item label="Салати" value="a5"/>
-                                    <Picker.Item label="Закуски" value="a6"/>
-                                    <Picker.Item label="Бургери" value="a7"/>
-                                    <Picker.Item label="Мячні страви" value="a8"/>
-                                    <Picker.Item label="Рибні страви" value="a9"/>
-                                    <Picker.Item label="Гриль" value="a10"/>
+                                    {createPickerItem()}
                                 </Picker>
-                            </View>
-                            <View style={{width: ((wid * 40) / 100)}}>
-                                <Text style={styles.textStyle}>Price</Text>
-                                <View>
-                                    <Text style={styles.textStyle}>From:</Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder={"from:"}
-                                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                                        onChangeText={text => setPriceFrom(Number(text))}
-                                    />
-                                </View>
-                                <View>
-                                    <Text style={styles.textStyle}>To:</Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder={"to"}
-                                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                                        onChangeText={text => setPriceTo(Number(text))}
-                                    />
-                                </View>
-                            </View>
-                            <View style={{width: ((wid * 20) / 100), backgroundColor: "#f194ff"}}>
-                                <Button
-                                    title="Add"
-                                    onPress={() => {
-                                        selectedFilters.push({from: priceFrom, to: priceTo, selected: selectedValue});
-                                        setRerender(!rerender);
-                                    }}
+                            }
+                        </View>
+                        <View style={{width: ((wid * 40) / 100), alignItems: 'center'}}>
+                            <Text style={styles.textStyle}>Price</Text>
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder={"from"}
+                                    keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : "number-pad"}
+                                    placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                                    onChangeText={text => setPriceFrom(Number(text))}
+                                />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder={"to"}
+                                    keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : "number-pad"}
+                                    placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                                    onChangeText={text => setPriceTo(Number(text))}
                                 />
                             </View>
                         </View>
+                        <TouchableOpacity
+                            style={styles.buttonAdd}
+                            title="Add"
+                            onPress={() => {
+                                if (!check(selectedValue)) {
+                                    selectedFilters.push({
+                                        from: priceFrom,
+                                        to: priceTo,
+                                        selected: selectedValue,
+                                        name: getCategoryName(selectedValue)
+                                    });
+                                    setRerender(!rerender);
+                                }
+                            }}
+                        >
+                            <Text style={styles.textStyle}>Add</Text>
+                        </TouchableOpacity>
                     </View>
-                </ScrollView>
+                </View>
             </View>
             <View>
                 <FlatList
                     data={selectedFilters}
-                    renderItem={({item}) => item.selected !== "a" ?<View style={styles.Container}>
-                        <Text>For Item {item.selected} from: {item.from}, to: {item.to}</Text>
+                    renderItem={({item}) => item.selected !== "a" ? <View style={styles.Container}>
+                        <Text>For {item.name} from: {item.from}, to: {item.to}</Text>
                         <Button title="Delete"
-                                onPress={()=>{for(let i = 0; i < selectedFilters.length; i++){
-                                    if (selectedFilters[i].selected === item.selected) {
-                                        selectedFilters.splice(i, 1);
-                                        break;
+                                onPress={() => {
+                                    for (let i = 0; i < selectedFilters.length; i++) {
+                                        if (selectedFilters[i].selected === item.selected) {
+                                            selectedFilters.splice(i, 1);
+                                            break;
+                                        }
+                                        setRerender(!rerender);
                                     }
-                                    setRerender(!rerender);
-                                }}}/>
+                                }}/>
                     </View> : <View></View>}
                     keyExtractor={item => item.selected}
                     extraData={rerender}
@@ -119,51 +141,63 @@ export default function FiltersScreen({navigation}) {
                     }
                 />
             </View>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                    sendFilters({navigation})
-                }}
-            >
-                <Text style={{
-                    textAlign: "center",
-                    color: "rgba(255, 255, 255, 0.7)",
-                    fontSize: 16
-                }}
-                >Save Filters</Text>
-            </TouchableOpacity>
+            <View style={{alignItems: 'center'}}>
+                <TouchableOpacity
+                    style={styles.buttonSave}
+                    onPress={() => {
+                        sendFilters({navigation})
+                    }}
+                >
+                    <Text style={{
+                        textAlign: "center",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        fontSize: 16
+                    }}
+                    >Save Filters</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
 
 function sendFilters({navigation}) {
+    console.log(selectedFilters);
     navigation.navigate("ListOfAll", {selectedFilters: selectedFilters});
 }
 
 const styles = StyleSheet.create({
     textStyle: {
-        fontSize: 25,
+        marginTop: 10,
+        fontSize: 20,
         fontStyle: "italic",
     },
-    input:{
-        width: ((wid*40)/100) - 30,
+    input: {
+        textAlign: 'center',
+        width: ((wid * 40) / 100) - 30,
         height: 45,
         borderRadius: 25,
         fontSize: 16,
         backgroundColor: "rgba(180,180,180, 0.7)",
         color: "rgb(0,0,0)",
-        paddingLeft: 45,
         marginHorizontal: 25,
+        marginTop: 15
     },
     Container: {
         flexDirection: "row",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
     },
-    button: {
+    buttonSave: {
         width: wid - 55,
         height: 45,
         backgroundColor: "rgba(180,180,180, 0.7)",
         borderRadius: 25,
         justifyContent: "center"
     },
+    buttonAdd: {
+        width: ((wid * 20) / 100),
+        backgroundColor: "rgba(180,180,180, 0.7)",
+        alignItems: 'center',
+        justifyContent: "center",
+        borderRadius: 45,
+    }
 });

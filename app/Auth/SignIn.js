@@ -4,7 +4,6 @@ import {Ionicons} from "@expo/vector-icons";
 import sign from "../WorkWithStorage/accWrite";
 import Bar from "../BarStyle";
 import MainLink from "../MainLinks.js";
-import {Base64} from 'js-base64'
 
 const wid = Dimensions.get('window').width;
 
@@ -51,7 +50,7 @@ export default function SignIn({navigation}) {
                         .then((resp) => resp.text())
                         .then(respText => {
                             if (respText === "Y") {
-                                sign("User", "Yes");
+                                sign("User", login);
                                 navigation.navigate("MainScreen")
                             }
                         })
@@ -102,7 +101,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: null,
         height: null,
-        // justifyContent: "center",
         alignItems: "center",
         paddingTop: 100,
     },

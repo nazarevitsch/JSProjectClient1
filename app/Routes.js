@@ -29,7 +29,7 @@ export default function Routes({navigation}) {
                 <Stack.Navigator
                     initialRouteName={data ? "MainScreen" : "SignIn"}
                 >
-                    <Stack.Screen name="MainScreen" component={MainScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="MainScreen" component={MainScreen} options={{headerShown: false}} />
                     <Stack.Screen name="SignUP" component={SignUp} options={({navigation}) => ({
                         title: "Create new Account",
                         headerLeft: () => (

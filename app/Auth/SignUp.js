@@ -71,7 +71,7 @@ export default function SignUp({navigation}) {
                     .then((resp) => resp.text())
                     .then(respText => {
                     if (respText === "Y") {
-                        sign("User", "Yes");
+                        sign("User", login);
                         navigation.navigate("MainScreen");
                 } else {
                     Alert.alert(

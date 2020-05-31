@@ -3,6 +3,6 @@ import {AsyncStorage} from "react-native";
 
 export default async function signedIN() {
     let awt = await AsyncStorage.getItem("User");
-    if (awt === "Yes") return true;
+    if (awt !== null) return true;
     else return false;
 }
