@@ -13,33 +13,14 @@ export default function SignIn({navigation}) {
     const [pass, setPass] = useState("");
     const [loginValidation, setLoginValidation] = useState(false);
     const [passValidation, setPassValidation] = useState(false);
-
-    const pressSignIn = () => {
-
-        fetch(MainLink() + "signIn", {
-            method: 'GET',
-            headers: {
-                Login: login,
-                Pass: pass,
-            }
-        })
-            .then((resp) => resp.text())
-            .then(respText => {
-                if (respText === "Y") {
-                    sign("User", login);
-                    navigation.navigate("MainScreen")
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    const [pressed, setPressed] = useState(false);
 
     return (
         <View style={styles.container}>
             <Bar/>
             <Text style={styles.logo}>Logo Eat</Text>
-            <View style={{marginTop: 30}}>
+            {!loginValidation && pressed ? <Warning text={"Email Field should not be empty and must be a valid Email!"}/> : <View></View>}
+            <View style={{marginTop: 8}}>
                 <Ionicons name={"ios-person"} size={28} color={"tomato"}
                           style={styles.iconInput}/>
                 <TextInput
@@ -49,6 +30,7 @@ export default function SignIn({navigation}) {
                     onChangeText={text => setLogin(text)}
                 />
             </View>
+            {!passValidation && pressed ? <Warning text={"Password Field should not be empty and must be at least 8 symbols long!"}/> : <View></View>}
             <View style={{marginTop: 8}}>
                 <Ionicons name={"ios-lock"} size={28} color={"tomato"}
                           style={styles.iconInput}/>
@@ -62,7 +44,29 @@ export default function SignIn({navigation}) {
             </View>
             <TouchableOpacity
                 style={styles.buttonLogIn}
-                onPress={}
+                onPress={ () => {
+                    setPressed(true);
+                    setPassValidation(pass.length >= 8);
+                    setLoginValidation(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(login));
+                    if (passValidation && loginValidation) {
+                    fetch(MainLink() + "signIn", {
+                    method: 'GET',
+                    headers: {
+                    Login: login,
+                    Pass: pass,
+                }
+                })
+                    .then((resp) => resp.text())
+                    .then(respText => {
+                    if (respText === "Y") {
+                    sign("User", login);
+                    navigation.navigate("MainScreen")
+                }
+                })
+                    .catch((err) => {
+                    console.log(err);
+                });
+                }}}
             >
                 <Text style={{
                     textAlign: "center",
@@ -97,6 +101,14 @@ export default function SignIn({navigation}) {
                 }}
                 >New Account</Text>
             </TouchableOpacity>
+        </View>
+    );
+}
+
+function Warning({text}){
+    return(
+        <View style={{paddingLeft: 40, paddingRight: 40, marginTop: 8}}>
+            <Text style={{fontSize: 16, color: 'red'}}>{text}</Text>
         </View>
     );
 }
