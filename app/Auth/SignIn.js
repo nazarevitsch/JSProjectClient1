@@ -11,6 +11,29 @@ export default function SignIn({navigation}) {
 
     const [login, setLogin] = useState("");
     const [pass, setPass] = useState("");
+    const [loginValidation, setLoginValidation] = useState(false);
+    const [passValidation, setPassValidation] = useState(false);
+
+    const pressSignIn = () => {
+
+        fetch(MainLink() + "signIn", {
+            method: 'GET',
+            headers: {
+                Login: login,
+                Pass: pass,
+            }
+        })
+            .then((resp) => resp.text())
+            .then(respText => {
+                if (respText === "Y") {
+                    sign("User", login);
+                    navigation.navigate("MainScreen")
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     return (
         <View style={styles.container}>
@@ -39,25 +62,7 @@ export default function SignIn({navigation}) {
             </View>
             <TouchableOpacity
                 style={styles.buttonLogIn}
-                onPress={() => {
-                    fetch(MainLink() + "signIn", {
-                        method: 'GET',
-                        headers: {
-                            Login: login,
-                            Pass: pass,
-                        }
-                    })
-                        .then((resp) => resp.text())
-                        .then(respText => {
-                            if (respText === "Y") {
-                                sign("User", login);
-                                navigation.navigate("MainScreen")
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }}
+                onPress={}
             >
                 <Text style={{
                     textAlign: "center",

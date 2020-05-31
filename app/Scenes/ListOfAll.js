@@ -6,6 +6,7 @@ import MainLink from "../MainLinks";
 export default function ListOfAll({navigation, route}) {
 
     const {selectedFilters} = route.params;
+    const {number} = route.params;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -22,7 +23,7 @@ export default function ListOfAll({navigation, route}) {
                 .catch(error => console.log(error))
                 .finally(()=> {
                     setLoading(false)});
-    }, [selectedFilters]);
+    }, [number]);
 
     return (
         <View>

@@ -162,7 +162,7 @@ export default function FiltersScreen({navigation}) {
 
 function sendFilters({navigation}) {
     console.log(selectedFilters);
-    navigation.navigate("ListOfAll", {selectedFilters: selectedFilters});
+    navigation.navigate("ListOfAll", {selectedFilters: selectedFilters, number: Math.floor(Math.random() * 899999) + 100000});
 }
 
 const styles = StyleSheet.create({
