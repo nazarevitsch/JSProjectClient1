@@ -35,24 +35,28 @@ export default function ForgotPasswordScene({navigation}) {
                 <View style={{marginTop: 8}}>
                     <Ionicons name={"ios-mail"} size={28} color={"tomato"}
                               style={styles.iconInput}/>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={"User Email"}
-                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                        onChangeText={text => setLogin(text)}
-                    />
+                    <View style={styles.input}>
+                        <TextInput
+                            style={{width: wid - 55, height: 45}}
+                            placeholder={"User Email"}
+                            placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                            onChangeText={text => setLogin(text)}
+                        />
+                    </View>
                 </View>
                 <View style={{marginTop: 8}}>
                     <Ionicons name={"ios-lock"} size={28} color={"tomato"}
                               style={styles.iconInput}/>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={"Security Code"}
-                        keyboardType="numeric"
-                        maxLength={6}
-                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                        onChangeText={text => setCode(Number(text))}
-                    />
+                    <View style={styles.input}>
+                        <TextInput
+                            style={{width: wid - 55, height: 45}}
+                            placeholder={"Security Code"}
+                            keyboardType="numeric"
+                            maxLength={6}
+                            placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                            onChangeText={text => setCode(Number(text))}
+                        />
+                    </View>
                 </View>
                 <TouchableOpacity
                     style={styles.buttonLogIn}

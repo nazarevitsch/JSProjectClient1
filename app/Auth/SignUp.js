@@ -29,12 +29,14 @@ export default function SignUp({navigation}) {
                 <View>
                     <Ionicons name={"ios-mail"} size={28} color={"tomato"}
                               style={styles.iconInput}/>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={"User Email"}
-                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                        onChangeText={text => setLogin(text)}
-                    />
+                    <View style={styles.input}>
+                        <TextInput
+                            style={{width: wid - 55, height: 45}}
+                            placeholder={"User Email"}
+                            placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                            onChangeText={text => setLogin(text)}
+                        />
+                    </View>
                 </View>
                 {!passValidation && pressed ?
                     <Warning text={"Password Field should not be empty and must be at least 8 symbols long!"}/> :
@@ -42,38 +44,44 @@ export default function SignUp({navigation}) {
                 <View style={{marginTop: 8}}>
                     <Ionicons name={"ios-lock"} size={28} color={"tomato"}
                               style={styles.iconInput}/>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={"Password"}
-                        secureTextEntry={true}
-                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                        onChangeText={text => setPass(text)}
-                    />
+                    <View style={styles.input}>
+                        <TextInput
+                            style={{width: wid - 55, height: 45}}
+                            placeholder={"Password"}
+                            secureTextEntry={true}
+                            placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                            onChangeText={text => setPass(text)}
+                        />
+                    </View>
                 </View>
                 {!passValidation && pressed ?
                     <Warning text={"Name Field should not be empty and must not contain numbers!"}/> : <View></View>}
                 <View style={{marginTop: 8}}>
                     <Ionicons name={"ios-person"} size={28} color={"tomato"}
                               style={styles.iconInput}/>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={"User Name"}
-                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                        onChangeText={text => setName(text)}
-                    />
+                    <View style={styles.input}>
+                        <TextInput
+                            style={{width: wid - 55, height: 45}}
+                            placeholder={"User Name"}
+                            placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                            onChangeText={text => setName(text)}
+                        />
+                    </View>
                 </View>
                 {!passValidation && pressed ? <Warning text={"Password Field should not be empty, " +
                 "must be at least 10 symbols long and must contain only numbers!"}/> : <View></View>}
                 <View style={{marginTop: 8}}>
                     <Ionicons name={"ios-person"} size={28} color={"tomato"}
                               style={styles.iconInput}/>
-                    <TextInput
-                        style={styles.input}
-                        keyboardType={"numeric"}
-                        placeholder={"User Phone Number"}
-                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                        onChangeText={text => setPhone(text)}
-                    />
+                    <View style={styles.input}>
+                        <TextInput
+                            style={{width: wid - 55, height: 45}}
+                            keyboardType={"numeric"}
+                            placeholder={"User Phone Number"}
+                            placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                            onChangeText={text => setPhone(text)}
+                        />
+                    </View>
                 </View>
                 <TouchableOpacity
                     style={styles.buttonLogIn}
