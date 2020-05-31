@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {StyleSheet, View, ActivityIndicator, FlatList, Text, Image, TouchableOpacity, RefreshControl} from "react-native";
 import MainLink from "../MainLinks";
+import DismissKeyboard from "../SpecialComponents/DismissKeyboard";
 
 
 export default function ListOfAll({navigation, route}) {
@@ -12,37 +13,40 @@ export default function ListOfAll({navigation, route}) {
 
 
     useEffect(() => {
-            fetch(MainLink(), {
-                method: 'GET',
-                headers: {
-                    Filters: FiltersToString(selectedFilters),
-                }
-            })
-                .then((res) =>res.json())
-                .then((resJson) => setData(resJson.data))
-                .catch(error => console.log(error))
-                .finally(()=> {
-                    setLoading(false)});
+        fetch(MainLink(), {
+            method: 'GET',
+            headers: {
+                Filters: FiltersToString(selectedFilters),
+            }
+        })
+            .then((res) => res.json())
+            .then((resJson) => setData(resJson.data))
+            .catch(error => console.log(error))
+            .finally(() => {
+                setLoading(false)
+            });
     }, [number]);
 
     return (
-        <View>
-            {loading ? <ActivityIndicator/> :
-            <FlatList
-                data={data}
-                extraData={data}
-                keyExtractor={item => item.id}
-                renderItem={({item}) =><ItemRender title={item} nav={navigation}/>}
-                ItemSeparatorComponent={() =>
-                    <View style={{
-                        height: 2,
-                        width: "100%",
-                        backgroundColor: "#CED0CE",
-                    }}
-                    />
-                }
-            />}
-        </View>
+        <DismissKeyboard>
+            <View>
+                {loading ? <ActivityIndicator/> :
+                    <FlatList
+                        data={data}
+                        extraData={data}
+                        keyExtractor={item => item.id}
+                        renderItem={({item}) => <ItemRender title={item} nav={navigation}/>}
+                        ItemSeparatorComponent={() =>
+                            <View style={{
+                                height: 2,
+                                width: "100%",
+                                backgroundColor: "#CED0CE",
+                            }}
+                            />
+                        }
+                    />}
+            </View>
+        </DismissKeyboard>
     );
 };
 

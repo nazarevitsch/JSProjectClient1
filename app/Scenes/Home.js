@@ -4,7 +4,6 @@ import OrderWindow from "./OrderWindow";
 import RoutsForListFiltersSort from "./RoutsForListFiltersSort";
 import Bar from "../BarStyle";
 import {createStackNavigator} from "@react-navigation/stack";
-import {View} from "react-native";
 
 const Stack = createStackNavigator();
 

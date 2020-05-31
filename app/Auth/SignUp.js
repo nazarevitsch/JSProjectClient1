@@ -69,6 +69,7 @@ export default function SignUp({navigation}) {
                               style={styles.iconInput}/>
                     <TextInput
                         style={styles.input}
+                        keyboardType={"numeric"}
                         placeholder={"User Phone Number"}
                         placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
                         onChangeText={text => setPhone(text)}
@@ -125,14 +126,6 @@ export default function SignUp({navigation}) {
                 </TouchableOpacity>
             </View>
         </DismissKeyboard>
-    );
-}
-
-function Warning({text}){
-    return(
-        <View style={{paddingLeft: 40, paddingRight: 40, marginTop: 8}}>
-            <Text style={{fontSize: 16, color: 'red'}}>{text}</Text>
-        </View>
     );
 }
 

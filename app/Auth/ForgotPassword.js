@@ -8,6 +8,8 @@ import {Text} from "react-native";
 import {StyleSheet} from "react-native";
 import {Alert} from "react-native";
 import MainLink from "../MainLinks.js";
+import DismissKeyboard from "../SpecialComponents/DismissKeyboard";
+import Warning from "../SpecialComponents/Warning,js";
 
 const wid = Dimensions.get('window').width;
 
@@ -16,92 +18,104 @@ export default function ForgotPasswordScene({navigation}) {
     const [login, setLogin] = useState("");
     const [code, setCode] = useState(0);
     const [ready, setReady] = useState(false);
+    const [loginValidation, setLoginValidation] = useState(false);
+    const [pressed, setPressed] = useState(false);
 
     return (
-        <View style={styles.container}>
-            <View style={{paddingLeft: 40, paddingRight: 40}}>
-                <Text style={{fontSize: 16}}>Enter your Email of your Account and
-                    press the button "Receive Code", in few Seconds you will receive a mail with code. You need to enter this code in
-                    field "Code" below and tap on button "Receive new Password".</Text>
-            </View>
-            <View style={{marginTop: 8}}>
-                <Ionicons name={"ios-mail"} size={28} color={"tomato"}
-                          style={styles.iconInput}/>
-                <TextInput
-                    style={styles.input}
-                    placeholder={"User Email"}
-                    placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                    onChangeText={text => setLogin(text)}
-                />
-            </View>
-            <View style={{marginTop: 8}}>
-                <Ionicons name={"ios-lock"} size={28} color={"tomato"}
-                          style={styles.iconInput}/>
-                <TextInput
-                    style={styles.input}
-                    placeholder={"Security Code"}
-                    keyboardType="numeric"
-                    maxLength={6}
-                    placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                    onChangeText={text => setCode(Number(text))}
-                />
-            </View>
-            <TouchableOpacity
-                style={styles.buttonLogIn}
-                onPress={() => {
-                    if (!ready) {
-                        fetch(MainLink() + "ForgotPass1", {
-                            method: 'GET',
-                            headers: {
-                                login: login,
+        <DismissKeyboard>
+            <View style={styles.container}>
+                <View style={{paddingLeft: 40, paddingRight: 40}}>
+                    <Text style={{fontSize: 16}}>Enter your Email of your Account and
+                        press the button "Receive Code", in few Seconds you will receive a mail with code. You need to
+                        enter this code in
+                        field "Code" below and tap on button "Receive new Password".</Text>
+                </View>
+                {!loginValidation && pressed ?
+                    <Warning text={"Email Field should not be empty and must be a valid Email!"}/> : <View></View>}
+                <View style={{marginTop: 8}}>
+                    <Ionicons name={"ios-mail"} size={28} color={"tomato"}
+                              style={styles.iconInput}/>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={"User Email"}
+                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                        onChangeText={text => setLogin(text)}
+                    />
+                </View>
+                <View style={{marginTop: 8}}>
+                    <Ionicons name={"ios-lock"} size={28} color={"tomato"}
+                              style={styles.iconInput}/>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={"Security Code"}
+                        keyboardType="numeric"
+                        maxLength={6}
+                        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+                        onChangeText={text => setCode(Number(text))}
+                    />
+                </View>
+                <TouchableOpacity
+                    style={styles.buttonLogIn}
+                    onPress={() => {
+                        setLoginValidation(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(login));
+                        if (!ready) {
+                            if (pressed && loginValidation) {
+                                fetch(MainLink() + "ForgotPass1", {
+                                    method: 'GET',
+                                    headers: {
+                                        login: login,
+                                    }
+                                })
+                                    .then((resp) => resp.text())
+                                    .then(respText => {
+                                        if (respText === "Y") {
+                                            setReady(true);
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                    });
                             }
-                        })
-                            .then((resp) => resp.text())
-                            .then(respText => {
-                                if (respText === "Y") {
-                                    setReady(true);
+                        } else {
+                            fetch(MainLink() + "ForgotPass2", {
+                                method: 'GET',
+                                headers: {
+                                    login: login,
+                                    code: code
                                 }
                             })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    } else {
-                        fetch(MainLink() + "ForgotPass2", {
-                            method: 'GET',
-                            headers: {
-                                login: login,
-                                code: code
-                            }
-                        })
-                            .then((resp) => resp.text())
-                            .then(respText => {
-                                if (respText === "Y") {
-                                    Alert.alert(
-                                        "Confirm",
-                                        "We send you new password!",
-                                        [
-                                            {
-                                                text: "Ok",
-                                                onPress: () => {navigation.navigate("SignIn")},
-                                                style: "cancel"
-                                            },
-                                        ],
-                                    );
-                                }
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    }
-                }}>
-                <Text style={{
-                    textAlign: "center",
-                    color: "rgba(255, 255, 255, 0.7)",
-                    fontSize: 16
-                }}
-                >{ready ? "Receive new Password" : "Receive Code"}</Text>
-            </TouchableOpacity>
-        </View>
+                                .then((resp) => resp.text())
+                                .then(respText => {
+                                    if (respText === "Y") {
+                                        Alert.alert(
+                                            "Confirm",
+                                            "We send you new password!",
+                                            [
+                                                {
+                                                    text: "Ok",
+                                                    onPress: () => {
+                                                        navigation.navigate("SignIn")
+                                                    },
+                                                    style: "cancel"
+                                                },
+                                            ],
+                                        );
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        }
+                    }}>
+                    <Text style={{
+                        textAlign: "center",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        fontSize: 16
+                    }}
+                    >{ready ? "Receive new Password" : "Receive Code"}</Text>
+                </TouchableOpacity>
+            </View>
+        </DismissKeyboard>
     );
 }
 
