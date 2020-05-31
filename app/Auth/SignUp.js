@@ -3,14 +3,10 @@ import {View, TextInput, Dimensions, StyleSheet, TouchableOpacity, Text, Alert, 
 import {Ionicons} from "@expo/vector-icons";
 import MainLink from "../MainLinks";
 import sign from "../WorkWithStorage/accWrite";
+import DismissKeyboard from "../SpecialComponents/DismissKeyboard";
+import Warning from "../SpecialComponents/Warning,js";
 
 const wid = Dimensions.get('window').width;
-
-const DismissKeyboard = ({children}) => (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        {children}
-    </TouchableWithoutFeedback>
-);
 
 export default function SignUp({navigation}) {
 
