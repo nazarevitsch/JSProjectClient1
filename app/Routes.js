@@ -4,7 +4,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import SignIn from "./Auth/SignIn";
 import SignUp from "./Auth/SignUp";
 import ForgotPassword from "./Auth/ForgotPassword";
-import signedIN from "./WorkWithStorage/Account";
+import signedIN from "./WorkWithStorage/CheckUserAutjirization";
 import MainScreen from "./Scenes/MainScreen";
 import Loading from "./Scenes/Loading";
 import {Button} from "react-native";

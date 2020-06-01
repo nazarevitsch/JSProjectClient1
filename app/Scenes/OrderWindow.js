@@ -1,9 +1,9 @@
 import {View, Text, DatePickerIOS, TouchableOpacity, Dimensions, StyleSheet, Picker, Alert} from "react-native";
 import React, {useState} from "react";
 import MainLink from "../MainLinks";
-import getEmail from "../WorkWithStorage/Email";
+import getEmail from "../WorkWithStorage/ReadUsersEmail";
 import DatePicker from 'react-native-datepicker'
-import sign from "../WorkWithStorage/accWrite";
+import sign from "../WorkWithStorage/WriteUser";
 
 const wid = Dimensions.get('window').width;
 

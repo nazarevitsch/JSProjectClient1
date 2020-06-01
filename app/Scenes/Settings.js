@@ -1,6 +1,6 @@
 import {Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React from "react";
-import del from "../WorkWithStorage/accDelete";
+import del from "../WorkWithStorage/DeleteUser";
 
 const wid = Dimensions.get('window').width;
 

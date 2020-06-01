@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {View, TextInput, Dimensions, StyleSheet, TouchableOpacity, Text, Alert, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import MainLink from "../MainLinks";
-import sign from "../WorkWithStorage/accWrite";
+import sign from "../WorkWithStorage/WriteUser";
 import DismissKeyboard from "../SpecialComponents/DismissKeyboard";
 import Warning from "../SpecialComponents/Warning,js";
 
