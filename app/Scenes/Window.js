@@ -35,7 +35,6 @@ export default function Window({navigation, route}) {
                 .then((res) => res.json())
                 .then((respJson) => {
                     setData(respJson);
-                    console.log(respJson);
                 })
                 .catch(error => console.log(error))
                 .finally(() => setLoading(false));

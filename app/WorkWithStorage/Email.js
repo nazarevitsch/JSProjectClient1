@@ -1,8 +1,7 @@
 import React from "react";
 import {AsyncStorage} from "react-native";
 
-export default async function signedIN() {
+export default async function getEmail() {
     let awt = await AsyncStorage.getItem("User");
-    if (awt !== null) return true;
-    else return false;
-};
+    return awt;
+}

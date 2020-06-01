@@ -1,12 +1,16 @@
-import {View, Text, ScrollView, DatePickerIOS, TouchableOpacity, Dimensions, StyleSheet, Picker, Alert} from "react-native";
+import {View, Text, DatePickerIOS, TouchableOpacity, Dimensions, StyleSheet, Picker, Alert} from "react-native";
 import React, {useState} from "react";
 import MainLink from "../MainLinks";
+import getEmail from "../WorkWithStorage/Email";
+import DatePicker from 'react-native-datepicker'
+import sign from "../WorkWithStorage/accWrite";
 
 const wid = Dimensions.get('window').width;
 
 export default function OrderWindow({navigation, route}) {
     const {id} = route.params;
     const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
     const [peopleAmount, setPeopleAmount] = useState(0);
 
     return (
@@ -14,12 +18,24 @@ export default function OrderWindow({navigation, route}) {
             <View style={{alignItems: "center"}}>
             <Text style={{fontSize: 22}}>Choice Date</Text>
             </View>
-            <DatePickerIOS
+            <View style={{flexDirection: "row"}}>
+            <DatePicker
                 date={date}
-                onDateChange={(newDate) => {
-                    setDate(newDate)
-                }}
+                mode="datetime"
+                format="MM-DD HH:MM"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={(date) => {setDate(date)}}
             />
+                {/*<DatePicker*/}
+                {/*    date={time}*/}
+                {/*    mode="time"*/}
+                {/*    format="YYYY-MM-DD"*/}
+                {/*    confirmBtnText="Confirm"*/}
+                {/*    cancelBtnText="Cancel"*/}
+                {/*    onDateChange={(date) => {setDate(date)}}*/}
+                {/*/>*/}
+            </View>
             <View style={{alignItems: "center"}}>
             <Text style={{fontSize: 22}}>Choice Amount Of People</Text>
             </View>
@@ -53,17 +69,24 @@ export default function OrderWindow({navigation, route}) {
     );
 }
 
-function sendOrder({id, date, peopleAmount, navigation}) {
+async function sendOrder({id, date, peopleAmount, navigation}) {
+    let em = await getEmail();
     fetch(MainLink() + "create_order", {
         headers: {
             id: id,
-            date: date,
-            peopleAmount: peopleAmount
+            date: (new Date().getFullYear()) + '-' + date,
+            peopleAmount: peopleAmount,
+            email: em
         }})
-        .then((res) => {
-            console.log(res.status)
-            if(res.status === 200) {createAlert({navigation})}
+        .then((resp) => resp.text())
+        .then(respText => {
+            if (respText === "Y") {
+                createAlert({navigation})
+            }
         })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 function createAlert({navigation}) {
