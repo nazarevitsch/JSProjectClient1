@@ -15,7 +15,7 @@ const wid = Dimensions.get('window').width;
 
 export default function ForgotPasswordScene({navigation}) {
 
-    const [login, setLogin] = useState("");
+    const [email, setEmail] = useState("");
     const [code, setCode] = useState(0);
     const [ready, setReady] = useState(false);
     const [loginValidation, setLoginValidation] = useState(false);
@@ -40,7 +40,7 @@ export default function ForgotPasswordScene({navigation}) {
                             style={{width: wid - 55, height: 45}}
                             placeholder={"User Email"}
                             placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                            onChangeText={text => setLogin(text)}
+                            onChangeText={text => setEmail(text)}
                         />
                     </View>
                 </View>
@@ -61,13 +61,15 @@ export default function ForgotPasswordScene({navigation}) {
                 <TouchableOpacity
                     style={styles.buttonLogIn}
                     onPress={() => {
-                        setLoginValidation(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(login));
+                        setLoginValidation(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+                        setPressed(true);
+                        if (pressed && loginValidation) {
                         if (!ready) {
-                            if (pressed && loginValidation) {
+
                                 fetch(MainLink() + "ForgotPass1", {
                                     method: 'GET',
                                     headers: {
-                                        login: login,
+                                        email: email,
                                     }
                                 })
                                     .then((resp) => resp.text())
@@ -80,17 +82,17 @@ export default function ForgotPasswordScene({navigation}) {
                                         console.log(err);
                                     });
                             }
-                        } else {
+                         else {
                             fetch(MainLink() + "ForgotPass2", {
                                 method: 'GET',
                                 headers: {
-                                    login: login,
+                                    email: email,
                                     code: code
                                 }
                             })
                                 .then((resp) => resp.text())
                                 .then(respText => {
-                                    if (respText === "Y") {
+                                    if (Number(respText) === 200) {
                                         Alert.alert(
                                             "Confirm",
                                             "We send you new password!",
@@ -109,7 +111,7 @@ export default function ForgotPasswordScene({navigation}) {
                                 .catch((err) => {
                                     console.log(err);
                                 });
-                        }
+                        }}
                     }}>
                     <Text style={{
                         textAlign: "center",

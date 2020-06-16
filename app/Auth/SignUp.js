@@ -10,7 +10,7 @@ const wid = Dimensions.get('window').width;
 
 export default function SignUp({navigation}) {
 
-    const [login, setLogin] = useState("");
+    const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
@@ -34,7 +34,9 @@ export default function SignUp({navigation}) {
                             style={{width: wid - 55, height: 45}}
                             placeholder={"User Email"}
                             placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                            onChangeText={text => setLogin(text)}
+                            onChangeText={text => {
+                                setEmail(text);
+                                setLoginValidation(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));}}
                         />
                     </View>
                 </View>
@@ -50,7 +52,9 @@ export default function SignUp({navigation}) {
                             placeholder={"Password"}
                             secureTextEntry={true}
                             placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                            onChangeText={text => setPass(text)}
+                            onChangeText={text => {
+                                setPass(text);
+                                setPassValidation(pass.length >= 8);}}
                         />
                     </View>
                 </View>
@@ -64,7 +68,9 @@ export default function SignUp({navigation}) {
                             style={{width: wid - 55, height: 45}}
                             placeholder={"User Name"}
                             placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                            onChangeText={text => setName(text)}
+                            onChangeText={text => {
+                                setName(text);
+                                setNameValidation(/^\D+$/.test(name));}}
                         />
                     </View>
                 </View>
@@ -79,7 +85,10 @@ export default function SignUp({navigation}) {
                             keyboardType={"numeric"}
                             placeholder={"User Phone Number"}
                             placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
-                            onChangeText={text => setPhone(text)}
+                            onChangeText={text => {
+                                setPhone(text);
+                                setPhoneValidation(/^\d{10,}$/.test(phone));
+                            }}
                         />
                     </View>
                 </View>
@@ -87,24 +96,22 @@ export default function SignUp({navigation}) {
                     style={styles.buttonLogIn}
                     onPress={() => {
                         setPressed(true);
-                        setPassValidation(pass.length >= 8);
-                        setLoginValidation(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(login));
-                        setPhoneValidation(/^\d{10,}$/.test(phone));
-                        setNameValidation(/^\D+$/.test(name));
                         if (passValidation && loginValidation && nameValidation && phoneValidation) {
                             fetch(MainLink() + "signUp", {
-                                method: 'GET',
+                                method: 'POST',
                                 headers: {
-                                    login: login,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: email,
                                     pass: pass,
                                     name: name,
-                                    phone: phone
-                                }
+                                    phone: phone})
                             })
                                 .then((resp) => resp.text())
                                 .then(respText => {
-                                    if (respText === "Y") {
-                                        sign("User", login);
+                                    if (Number(respText) === 200) {
+                                        sign("User", email);
                                         navigation.navigate("MainScreen");
                                     } else {
                                         Alert.alert(

@@ -1,5 +1,7 @@
-export default function MainLink(){return "http://172.20.10.12:8099/";}
+export default function MainLink(){return "https://serverforordersapplication.herokuapp.com/";}
 
-//192.168.0.104
-//172.20.10.12
-//172.20.10.19
+//http://192.168.0.104:5000/
+// http://172.20.10.12:5000/
+//http://172.20.10.19:5000/
+
+//https://serverforordersapplication.herokuapp.com/

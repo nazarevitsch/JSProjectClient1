@@ -10,7 +10,6 @@ const wid = Dimensions.get('window').width;
 export default function OrderWindow({navigation, route}) {
     const {id} = route.params;
     const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
     const [peopleAmount, setPeopleAmount] = useState(0);
 
     return (
@@ -18,7 +17,7 @@ export default function OrderWindow({navigation, route}) {
             <View style={{alignItems: "center"}}>
             <Text style={{fontSize: 22}}>Choice Date</Text>
             </View>
-            <View style={{flexDirection: "row"}}>
+            <View style={{alignItems: "center"}}>
             <DatePicker
                 date={date}
                 mode="datetime"
@@ -27,14 +26,6 @@ export default function OrderWindow({navigation, route}) {
                 cancelBtnText="Cancel"
                 onDateChange={(date) => {setDate(date)}}
             />
-                {/*<DatePicker*/}
-                {/*    date={time}*/}
-                {/*    mode="time"*/}
-                {/*    format="YYYY-MM-DD"*/}
-                {/*    confirmBtnText="Confirm"*/}
-                {/*    cancelBtnText="Cancel"*/}
-                {/*    onDateChange={(date) => {setDate(date)}}*/}
-                {/*/>*/}
             </View>
             <View style={{alignItems: "center"}}>
             <Text style={{fontSize: 22}}>Choice Amount Of People</Text>
@@ -72,15 +63,19 @@ export default function OrderWindow({navigation, route}) {
 async function sendOrder({id, date, peopleAmount, navigation}) {
     let em = await getEmail();
     fetch(MainLink() + "create_order", {
+        method: "POST",
         headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
             id: id,
             date: (new Date().getFullYear()) + '-' + date,
             peopleAmount: peopleAmount,
-            email: em
-        }})
+            email: em})
+    })
         .then((resp) => resp.text())
         .then(respText => {
-            if (respText === "Y") {
+            if (Number(respText) === 200) {
                 createAlert({navigation})
             }
         })

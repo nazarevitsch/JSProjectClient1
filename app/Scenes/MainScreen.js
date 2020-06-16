@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Ionicons, FontAwesome} from '@expo/vector-icons';
 import SettingsScreen from "./Settings";
-import MapScreen from "./Map";
+import HistoryScreen from "./History";
 import HomeScreen from "./Home";
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +19,7 @@ export default function MainScreen({navigation}) {
                                 ? 'ios-information-circle'
                                 : 'ios-information-circle-outline';
                         }
-                        if (route.name === 'Map') {
+                        if (route.name === 'History') {
                             iconName = focused ? 'map' : 'map-o';
                         }
 
@@ -29,7 +29,7 @@ export default function MainScreen({navigation}) {
                         if (route.name === "Settings" || route.name === "List") {
                             return <Ionicons name={iconName} size={size} color={color}/>;
                         }
-                        if (route.name === "Map") {
+                        if (route.name === "History") {
                             return <FontAwesome name={iconName} size={size} color={color}/>;
                         }
                     },
@@ -42,7 +42,7 @@ export default function MainScreen({navigation}) {
                 initialRouteName="List"
             >
                 <Tab.Screen name="List" component={HomeScreen}/>
-                <Tab.Screen name="Map" component={MapScreen}/>
+                <Tab.Screen name="History" component={HistoryScreen}/>
                 <Tab.Screen name="Settings" component={SettingsScreen}/>
             </Tab.Navigator>
     );

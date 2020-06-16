@@ -13,7 +13,7 @@ export default function ListOfAll({navigation, route}) {
 
 
     useEffect(() => {
-        fetch(MainLink(), {
+        fetch(MainLink() + "restaurants", {
             method: 'GET',
             headers: {
                 Filters: FiltersToString(selectedFilters),
@@ -78,8 +78,7 @@ function ItemRender({title, nav}) {
 
 function FiltersToString(selectedFilters) {
     let line = "";
-    console.log(selectedFilters[0]);
-    for(let i = 0; i < selectedFilters.length; i++){
+    for(let i = 1; i < selectedFilters.length; i++){
         line += selectedFilters[i].from + "_" + selectedFilters[i].selected + "_" + selectedFilters[i].to + "|";
     }
     console.log(line);
